@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KampusHub — Portal Magang, Lomba & Beasiswa</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <div class="brand-icon">K</div>
+        <div>
+          <span class="brand-name">Kampus<span>Hub</span></span>
+          <small class="brand-sub">Portal Peluang Mahasiswa</small>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <button class="nav-tab active" id="tabExplore" onclick="switchView('explore')">
+          Jelajahi Peluang
+        </button>
+        <button class="nav-tab" id="tabSaved" onclick="switchView('saved')">
+          Tersimpan <span class="saved-count" id="savedBadge">0</span>
+        </button>
+        <button class="btn-admin-toggle" id="adminToggleBtn" onclick="openAdminAuth()">
+          🔒 Mode Admin
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <span class="hero-pill">✨ Update Setiap Hari untuk Mahasiswa Indonesia</span>
+      <h1>Temukan Magang, Lomba, dan Beasiswa Impianmu</h1>
+      <p>Satu pintu informasi terkurasi untuk akselerasi karier, prestasi kompetisi, dan dukungan pendanaan kuliah.</p>
+      
+      <!-- Statistik Ringkas -->
+      <div class="hero-stats">
+        <div class="stat-box">
+          <strong id="statTotal">0</strong>
+          <span>Total Peluang</span>
+        </div>
+        <div class="stat-box">
+          <strong id="statActive">0</strong>
+          <span>Masih Dibuka</span>
+        </div>
+        <div class="stat-box">
+          <strong id="statUrgent">0</strong>
+          <span>Segera Tutup (&lt;7 Hari)</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Panel Admin (Tersembunyi sampai login) -->
+    <section id="adminDashboard" class="admin-panel hidden">
+      <div class="admin-header">
+        <div>
+          <h2>🛠️ Dashboard Pengelola Informasi (Admin)</h2>
+          <p>Tambah, perbarui, atau kelola status sorotan (Featured/Iklan) peluang.</p>
+        </div>
+        <button class="btn-outline-danger" onclick="logoutAdmin()">Keluar Mode Admin</button>
+      </div>
+
+      <form id="opportunityForm" class="admin-form" onsubmit="handleFormSubmit(event)">
+        <input type="hidden" id="editId">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Judul Program *</label>
+            <input type="text" id="inputTitle" placeholder="Contoh: Magang UI/UX Designer" required>
+          </div>
+          <div class="form-group">
+            <label>Kategori *</label>
+            <select id="inputCategory" required>
+              <option value="Magang">Magang</option>
+              <option value="Lomba">Lomba</option>
+              <option value="Beasiswa">Beasiswa</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Penyelenggara *</label>
+            <input type="text" id="inputOrganizer" placeholder="Contoh: PT Teknologi / Kemendikbud" required>
+          </div>
+          <div class="form-group">
+            <label>Lokasi / Sistem *</label>
+            <select id="inputMode" required>
+              <option value="Online / WFH">Online / WFH</option>
+              <option value="Hybrid">Hybrid</option>
+              <option value="Onsite / WFO">Onsite / WFO</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tanggal Penutupan (Deadline) *</label>
+            <input type="date" id="inputDeadline" required>
+          </div>
+          <div class="form-group">
+            <label>Benefit / Hadiah / Uang Saku *</label>
+            <input type="text" id="inputBenefit" placeholder="Contoh: Uang Saku + Sertifikat" required>
+          </div>
+          <div class="form-group">
+            <label>Link Pendaftaran *</label>
+            <input type="url" id="inputLink" placeholder="https://..." required>
+          </div>
+          <div class="form-group checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="inputFeatured">
+              <span>⭐ Jadikan Sorotan Utama (Paid Listing)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Deskripsi Lengkap & Persyaratan Utama *</label>
+          <textarea id="inputDescription" rows="3" placeholder="Tuliskan kriteria semester, jurusan, dokumen yang dibutuhkan, dan ringkasan kegiatan..." required></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" id="submitBtn">Simpan & Publikasikan</button>
+          <button type="button" class="btn-secondary" onclick="resetForm()">Reset Form</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Kontrol Pencarian, Filter & Pengurutan -->
+    <section class="controls-card">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Cari posisi, nama lomba, beasiswa, atau penyelenggara..." oninput="renderOpportunities()">
+      </div>
+
+      <div class="filter-row">
+        <div class="category-pills" id="categoryPills">
+          <button class="pill active" data-cat="ALL" onclick="setCategory('ALL')">Semua</button>
+          <button class="pill" data-cat="Magang" onclick="setCategory('Magang')">💼 Magang</button>
+          <button class="pill" data-cat="Lomba" onclick="setCategory('Lomba')">🏆 Lomba</button>
+          <button class="pill" data-cat="Beasiswa" onclick="setCategory('Beasiswa')">🎓 Beasiswa</button>
+        </div>
+
+        <div class="select-filters">
+          <select id="modeFilter" onchange="renderOpportunities()">
+            <option value="ALL">Semua Sistem</option>
+            <option value="Online / WFH">Online / WFH</option>
+            <option value="Hybrid">Hybrid</option>
+            <option value="Onsite / WFO">Onsite / WFO</option>
+          </select>
+
+          <select id="statusFilter" onchange="renderOpportunities()">
+            <option value="OPEN">Status: Masih Dibuka</option>
+            <option value="ALL">Status: Semua</option>
+            <option value="CLOSED">Status: Sudah Tutup</option>
+          </select>
+
+          <select id="sortFilter" onchange="renderOpportunities()">
+            <option value="FEATURED">Urutkan: Rekomendasi</option>
+            <option value="DEADLINE_ASC">Deadline Terdekat</option>
+            <option value="NEWEST">Terbaru Ditambahkan</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Info Hasil -->
+    <div class="results-header">
+      <h3 id="viewTitle">Semua Peluang Tersedia</h3>
+      <span id="resultsCount">Menampilkan 0 hasil</span>
+    </div>
+
+    <!-- Grid Kartu Peluang -->
+    <section id="cardsGrid" class="cards-grid"></section>
+  </main>
+
+  <!-- Modal Detail Peluang -->
+  <div id="detailModal" class="modal-overlay hidden" onclick="closeModalOnOutside(event)">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeDetailModal()">&times;</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Modal Login Admin Sederhana -->
+  <div id="authModal" class="modal-overlay hidden" onclick="closeModalOnOutside(event)">
+    <div class="modal-box modal-sm">
+      <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+      <h3>Login Admin Portal</h3>
+      <p class="modal-sub">Masukkan PIN Admin untuk mengelola data peluang. (Default PIN: <strong>1234</strong>)</p>
+      <form onsubmit="verifyAdminPin(event)">
+        <input type="password" id="adminPinInput" placeholder="Masukkan PIN (1234)" required autofocus>
+        <button type="submit" class="btn-primary full-width" style="margin-top: 12px;">Masuk Dashboard</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+
+  <footer class="footer">
+    <p>&copy; 2026 <strong>KampusHub</strong> — Portal Informasi Magang, Lomba & Beasiswa Mahasiswa.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
