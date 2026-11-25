@@ -26,7 +26,7 @@ Ide asal: 25
 Fitur inti versi dasar (MVP): Data kamar dan penghuni, catatan pembayaran sewa, status lunas atau menunggak, laporan bulanan
 Sumber pendapatan: Langganan bulanan per jumlah kamar
 
-Alasan Pemilihan
+# Alasan Pemilihan
 1. 	Pencatat keuangan pribadi. Logikanya hanya penjumlahan dan pengelompokan data, tanpa pihak luar. Datanya milik satu pengguna sehingga tidak perlu sistem peran yang rumit, dan hasil akhirnya langsung bisa dipakai teman sekelas sebagai pengguna uji.
 2. 	Direktori makanan murah. Berupa situs konten dengan pencarian dan filter, sehingga fokus pada tampilan dan pengelolaan data. Masalahnya dirasakan semua mahasiswa dan datanya bisa dikumpulkan langsung dari warung sekitar kampus tanpa integrasi pihak ketiga.
 3. 	Portal info peluang. Alurnya sederhana: admin memasukkan info, mahasiswa mencari dan memfilter. Risiko teknisnya rendah dan ruang pengembangan tampilan luas.
