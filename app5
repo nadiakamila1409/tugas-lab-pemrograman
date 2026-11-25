@@ -1,1 +1,208 @@
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KOSPACE — Manage Your Boarding House Smarter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--p:#192B24;--s:#294235;--soft:#DDE9DF;--bg:#F7F7F4;--w:#fff;--t:#202923;--m:#78827B;--b:#E6EAE6;--ok:#43805A;--wa:#C48A3C;--da:#C65C55}
+*{box-sizing:border-box}html,body{margin:0;overflow-x:hidden}body{background:var(--bg);color:var(--t);font:14px/1.5 'Plus Jakarta Sans',Inter,system-ui,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}:focus-visible{outline:2px solid var(--ok);outline-offset:2px}
+aside{position:fixed;inset:0 auto 0 0;width:232px;background:var(--p);color:#cfdad2;padding:20px 12px;display:flex;flex-direction:column;z-index:30;transition:transform .2s}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:18px;letter-spacing:.5px;padding:0 10px 22px}.logo i{width:30px;height:30px;border-radius:8px;background:var(--soft);color:var(--p);display:grid;place-items:center;font-style:normal;font-size:15px}
+nav button{display:block;width:100%;text-align:left;border:0;background:none;color:#b9c8bd;padding:9px 12px;border-radius:8px;margin-bottom:2px}nav button:hover{background:#243a2f;color:#fff}nav button.on{background:var(--s);color:#fff;font-weight:600}
+.side-f{margin-top:auto;padding:12px 10px 0;border-top:1px solid #2f4539;font-size:12px}.side-f b{color:#fff;display:block}
+main{margin-left:232px}.top{position:sticky;top:0;z-index:20;height:64px;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--b);display:flex;align-items:center;gap:14px;padding:0 28px}
+.top h2{margin:0;font-size:16px;white-space:nowrap}.top .sp{flex:1}.srch{width:min(260px,38vw);padding:8px 12px;border:1px solid var(--b);border-radius:9px;background:var(--bg)}
+.ib{width:36px;height:36px;border:1px solid var(--b);background:#fff;border-radius:9px;position:relative}.ib em{position:absolute;top:-4px;right:-4px;background:var(--da);color:#fff;font-size:10px;font-style:normal;min-width:16px;height:16px;border-radius:8px;display:grid;place-items:center}
+.av{width:34px;height:34px;border-radius:50%;background:var(--soft);color:var(--p);display:grid;place-items:center;font-weight:700;font-size:12px}.menu{display:none}
+#np{position:absolute;right:70px;top:58px;width:290px;background:#fff;border:1px solid var(--b);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.12);padding:14px;display:none}#np.on{display:block}#np p{margin:0 0 9px;font-size:13px}
+#view{padding:26px 28px 60px;max-width:1400px;margin:auto}.hd{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:20px}.hd h1{margin:0;font-size:22px;letter-spacing:-.4px}.hd p{margin:2px 0 0;color:var(--m)}.hd .ac{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--b);background:#fff;padding:8px 13px;border-radius:9px;font-weight:600;font-size:13px}.btn:hover{background:var(--bg)}.btn.pr{background:var(--p);border-color:var(--p);color:#fff}.btn.pr:hover{background:var(--s)}.btn.dn{color:var(--da)}.btn.sm{padding:4px 9px;font-size:12px}
+.grid{display:grid;gap:14px}.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}.g2{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);margin-top:14px}.g3{grid-template-columns:repeat(auto-fill,minmax(235px,1fr))}
+.card{background:#fff;border:1px solid var(--b);border-radius:12px;padding:18px}.card h3{margin:0 0 14px;font-size:14px}.stat small{color:var(--m)}.stat b{display:block;font-size:24px;letter-spacing:-.5px;margin-top:6px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:560px}th{text-align:left;color:var(--m);font-weight:500;font-size:12px;padding:9px 10px;border-bottom:1px solid var(--b)}td{padding:11px 10px;border-bottom:1px solid #f0f2ef;vertical-align:middle}tr:last-child td{border:0}td .ac{display:flex;gap:5px;flex-wrap:wrap}
+.bd{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}.ok{background:#e3efe7;color:#2f6b45}.warn{background:#f8ecd6;color:#8f6220}.red{background:#f6e2e0;color:#a2423b}.mute{background:#eef0ed;color:#68716b}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.bar select,.bar input{padding:8px 11px;border:1px solid var(--b);border-radius:9px;background:#fff}
+.sub{color:var(--m);font-size:12px}.neg{color:var(--da)}.pos{color:var(--ok)}.empty{padding:28px;text-align:center;color:var(--m)}
+.room b.n{font-size:17px}.room .rw{display:flex;justify-content:space-between;align-items:center}.room p{margin:6px 0;color:var(--m);font-size:12px}.room .ac{display:flex;gap:6px;margin-top:12px}
+.lg{display:flex;gap:14px;font-size:12px;color:var(--m);margin-bottom:6px}.lg i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px}
+.dn-w{display:flex;align-items:center;gap:20px;flex-wrap:wrap}.dn-w ul{list-style:none;margin:0;padding:0;flex:1;min-width:130px}.dn-w li{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}
+.act{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid #f0f2ef;font-size:13px}.act:last-child{border:0}.act i{width:8px;height:8px;border-radius:50%;background:var(--ok);margin-top:7px;flex:none}
+#ov{position:fixed;inset:0;background:rgba(20,30,24,.45);display:none;align-items:center;justify-content:center;padding:14px;z-index:50}#ov.on{display:flex}
+#md{background:#fff;border-radius:14px;width:min(560px,100%);max-height:92vh;overflow:auto;padding:22px}#md h3{margin:0 0 16px;font-size:17px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px}.fd{display:flex;flex-direction:column;gap:5px}.fd.full{grid-column:1/-1}.fd label{font-size:12px;color:var(--m)}.fd input,.fd select,.fd textarea{padding:9px 11px;border:1px solid var(--b);border-radius:9px;background:#fff;width:100%}
+.er{color:var(--da);font-size:12px;margin-top:10px;min-height:16px}.mf{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}.dl{display:grid;grid-template-columns:130px 1fr;gap:6px 10px;font-size:13px}.dl dt{color:var(--m)}.dl dd{margin:0}
+#toast{position:fixed;right:20px;bottom:20px;background:var(--p);color:#fff;padding:11px 16px;border-radius:10px;font-size:13px;z-index:80;opacity:0;transform:translateY(8px);transition:.2s;pointer-events:none;max-width:calc(100% - 40px)}#toast.on{opacity:1;transform:none}#toast.err{background:var(--da)}
+.scrim{display:none}
+@media(max-width:900px){aside{transform:translateX(-100%)}aside.on{transform:none}.scrim.on{display:block;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:25}main{margin-left:0}.menu{display:block}.g2{grid-template-columns:1fr}.top,#view{padding-left:16px;padding-right:16px}#np{right:12px}}
+@media(max-width:560px){.fg{grid-template-columns:1fr}.top h2{font-size:14px}.dl{grid-template-columns:100px 1fr}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<aside id="sb"><div class="logo"><i>K</i>KOSPACE</div><nav id="nav"></nav><div class="side-f"><b id="sk"></b><span id="sl"></span></div></aside>
+<div class="scrim" id="sc"></div>
+<main>
+<header class="top"><button class="ib menu" id="mn" aria-label="Buka menu">☰</button><h2 id="pt"></h2><span class="sp"></span><input class="srch" id="q" type="search" placeholder="Cari…" aria-label="Pencarian"><button class="ib" id="bell" aria-label="Notifikasi">🔔<em id="bc"></em></button><div class="av" id="ua"></div><div id="np"></div></header>
+<div id="view"></div>
+</main>
+<div id="ov"><div id="md" role="dialog" aria-modal="true"></div></div>
+<div id="toast" role="status"></div>
+<script>
+const K='kospace_v1',$=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rp=n=>'Rp'+Math.round(n||0).toLocaleString('id-ID'),pad=n=>String(n).padStart(2,'0'),iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const T=iso(new Date()),MN=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'],uid=()=>Math.random().toString(36).slice(2,9);
+const fd=s=>{if(!s)return'—';const[y,m,d]=s.split('-');return+d+' '+MN[m-1]+' '+y},per=p=>MN[p.slice(5)-1]+' '+p.slice(0,4);
+const addDays=(s,n)=>{const d=new Date(s+'T00:00:00');d.setDate(d.getDate()+n);return iso(d)};
+const PAGES=[['dash','Dashboard'],['rooms','Data Kamar'],['tenants','Penghuni'],['bills','Tagihan'],['fin','Keuangan'],['maint','Maintenance'],['set','Pengaturan']];
+const EC=['Listrik','Air','Internet','Perbaikan','Kebersihan','Pengeluaran lainnya'],IC=['Uang sewa','Biaya tambahan','Pemasukan lainnya'];
+let D,S={page:'dash',q:'',f:{rooms:'',tenants:'',bills:'',maint:'',from:'',to:'',cat:''}};
+
+function seed(){
+ const now=new Date(),ym=k=>{const d=new Date(now.getFullYear(),now.getMonth()-k,1);return d.getFullYear()+'-'+pad(d.getMonth()+1)};
+ const pr=[800,850,900,950,1000,1100,1200,1250,1400,1500],rooms=[],tenants=[],bills=[],tx=[],maint=[];
+ for(let f=1;f<=2;f++)for(let i=1;i<=10;i++){const no=f*100+i,p=pr[(i-1+(f-1)*3)%10]*1000;rooms.push({id:'r'+no,no:String(no),prop:'Kos Tembalang',floor:f,price:p,fac:p>=1100000?'AC, Kamar mandi dalam, Kasur, Lemari':p>=950000?'Kipas, Kamar mandi dalam, Kasur':'Kipas, Kamar mandi luar, Kasur',manual:false})}
+ const names=['Aditya Pratama','Siti Nurhaliza','Rizky Ramadhan','Dewi Anggraini','Bagas Saputra','Nadia Putri','Fajar Nugroho','Maya Kusuma','Yoga Prasetyo','Intan Permata','Dimas Wicaksono','Rina Safitri','Kevin Hartono','Eko Setiawan'],rn=[101,102,103,104,105,106,107,109,201,202,203,205,207,110];
+ names.forEach((n,i)=>{const r=rooms.find(r=>r.no==rn[i]),out=i==13,sk=5-(i%6),ok=out?2:0,id='t'+i;
+  tenants.push({id,name:n,phone:'0812'+(3400000+i*17231),email:n.split(' ')[0].toLowerCase()+'@mail.com',roomId:r.id,in:ym(sk)+'-01',out:out?ym(2)+'-25':'',price:r.price,deposit:r.price,status:out?'Keluar':'Aktif'});
+  for(let k=sk;k>=ok;k--){const p=ym(k),b={id:uid(),tenantId:id,period:p,date:p+'-01',due:k==0&&p+'-10'<T?addDays(T,7):p+'-10',amount:r.price,pays:[]};let pay=1;
+   if(k==0)pay=[1,.5,0,1][i%4];if(k==1&&i==5)pay=0;if(k==1&&i==9)pay=.5;
+   if(pay){let d=p+'-'+pad(3+i%6);if(d>T)d=T;const a=r.price*pay,py={id:uid(),date:d,amount:a,method:['Transfer','Tunai','QRIS'][i%3]};b.pays.push(py);tx.push({id:uid(),type:'in',cat:'Uang sewa',date:d,amount:a,desc:'Sewa '+n+' (kamar '+r.no+')',pid:py.id})}
+   bills.push(b)}});
+ for(let k=5;k>=0;k--){const d=ym(k)+'-'+(k?'15':pad(Math.min(15,now.getDate())));
+  [['Listrik',1050000+k*40000],['Air',320000],['Internet',350000],['Kebersihan',250000]].forEach(([c,a])=>tx.push({id:uid(),type:'out',cat:c,date:d,amount:a,desc:c+' bulanan'}))}
+ tx.push({id:uid(),type:'in',cat:'Biaya tambahan',date:ym(1)+'-20',amount:150000,desc:'Biaya laundry kamar 104'});
+ maint.push({id:'m1',title:'AC tidak dingin',roomId:'r108',desc:'Freon habis, menunggu teknisi.',date:ym(0)+'-02',cost:350000,status:'Diproses',flag:true},
+  {id:'m2',title:'Keran bocor',roomId:'r102',desc:'Keran kamar mandi menetes.',date:ym(1)+'-12',cost:150000,status:'Selesai',flag:false,done:ym(1)+'-13'},
+  {id:'m3',title:'Lampu koridor mati',roomId:'r205',desc:'Lampu depan kamar 205.',date:T,cost:0,status:'Baru',flag:false});
+ tx.push({id:uid(),type:'out',cat:'Perbaikan',date:ym(1)+'-13',amount:150000,desc:'Keran bocor (kamar 102)',mid:'m2'});
+ const h=36e5,log=[{t:Date.now()-2*h,x:'Pembayaran sewa diterima dari Aditya Pratama'},{t:Date.now()-20*h,x:'Laporan baru: Lampu koridor mati (kamar 205)'},{t:Date.now()-50*h,x:'AC kamar 108 mulai diperbaiki'},{t:Date.now()-90*h,x:'Tagihan bulanan dibuat untuk semua penghuni'}];
+ return{cfg:{name:'Kos Tembalang',loc:'Tembalang, Semarang',owner:'Lia'},rooms,tenants,bills,tx,maint,log}}
+function load(){try{const s=localStorage.getItem(K);if(s)return JSON.parse(s)}catch(e){}return null}
+function save(){try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}}
+D=load()||seed();save();
+
+// ---- derived
+const room=id=>D.rooms.find(r=>r.id===id),rno=id=>room(id)?.no||'—',ten=id=>D.tenants.find(t=>t.id===id);
+const occ=id=>D.tenants.find(t=>t.roomId===id&&t.status==='Aktif'),isM=r=>r.manual||D.maint.some(m=>m.roomId===r.id&&m.flag&&m.status!=='Selesai');
+const rst=r=>isM(r)?'Maintenance':occ(r.id)?'Terisi':'Kosong';
+const paid=b=>b.pays.reduce((a,p)=>a+p.amount,0),bst=b=>{const p=paid(b);return p>=b.amount?'Lunas':b.due<T?'Terlambat':p>0?'Dibayar sebagian':'Belum dibayar'};
+const sum=(ty,ym,l=D.tx)=>l.filter(t=>t.type===ty&&(!ym||t.date.startsWith(ym))).reduce((a,t)=>a+t.amount,0);
+const bcls=s=>({Terisi:'ok',Lunas:'ok',Selesai:'ok',Aktif:'ok',Maintenance:'warn','Dibayar sebagian':'warn',Diproses:'warn',Terlambat:'red'}[s]||'mute'),badge=s=>`<span class="bd ${bcls(s)}">${s}</span>`;
+const log=x=>{D.log.unshift({t:Date.now(),x});D.log=D.log.slice(0,30)},has=(s,q)=>s.toLowerCase().includes(q.toLowerCase());
+function ago(t){const m=Math.round((Date.now()-t)/6e4);return m<1?'Baru saja':m<60?m+' menit lalu':m<1440?Math.round(m/60)+' jam lalu':Math.round(m/1440)+' hari lalu'}
+
+// ---- ui helpers
+let tt;function toast(m,err){const e=$('#toast');e.textContent=m;e.className='on'+(err?' err':'');clearTimeout(tt);tt=setTimeout(()=>e.className='',2800)}
+const openM=h=>{$('#md').innerHTML=h;$('#ov').classList.add('on')},closeM=()=>$('#ov').classList.remove('on');
+function field([k,l,t,o,c,opt],v){const val=v??'';let i;
+ if(t==='select')i=`<select name="${k}">${(o||[]).map(x=>{const[a,b]=Array.isArray(x)?x:[x,x];return`<option value="${esc(a)}"${String(a)===String(val)?' selected':''}>${esc(b)}</option>`}).join('')}</select>`;
+ else if(t==='textarea')i=`<textarea name="${k}" rows="3">${esc(val)}</textarea>`;
+ else i=`<input name="${k}" type="${t}" value="${esc(val)}"${t==='number'?' min="0" step="any"':''}>`;
+ return`<div class="fd ${c||''}"><label>${l}${opt?' (opsional)':''}</label>${i}</div>`}
+function form(title,fields,vals,onSave,okLabel){
+ openM(`<h3>${title}</h3><form novalidate><div class="fg">${fields.map(f=>field(f,vals[f[0]])).join('')}</div><div class="er" id="er"></div><div class="mf"><button type="button" class="btn" data-a="close">Batal</button><button class="btn pr">${okLabel||'Simpan'}</button></div></form>`);
+ $('#md form').onsubmit=e=>{e.preventDefault();const fdt=new FormData(e.target),v={};let err='';
+  for(const[k,l,t,o,c,opt]of fields){let x=String(fdt.get(k)??'').trim();if(!x&&!opt){err=l+' wajib diisi.';break}
+   if(t==='number'){x=x===''?0:Number(x);if(isNaN(x)||x<0){err=l+' harus berupa angka positif.';break}}v[k]=x}
+  err=err||onSave(v)||'';if(err){$('#er').textContent=err;toast(err,1)}else{save();closeM();render()}}}
+function ask(msg,fn){openM(`<h3>Konfirmasi</h3><p>${msg}</p><div class="mf"><button class="btn" data-a="close">Batal</button><button class="btn pr" id="yes">Ya, lanjutkan</button></div>`);$('#yes').onclick=()=>{fn();save();closeM();render()}}
+const head=(t,s,a)=>`<div class="hd"><div><h1>${t}</h1><p>${s}</p></div><div class="ac">${a||''}</div></div>`;
+const tbl=(h,rows,em)=>rows.length?`<div class="card tw" style="padding:6px 8px"><table><thead><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`:`<div class="card empty">${em}</div>`;
+const btn=(a,id,l,c='')=>`<button class="btn sm ${c}" data-a="${a}" data-id="${id}">${l}</button>`;
+const sel=(key,opts,all)=>`<select aria-label="Filter" onchange="S.f['${key}']=this.value;render()"><option value="">${all}</option>${opts.map(o=>{const[a,b]=Array.isArray(o)?o:[o,o];return`<option value="${esc(a)}"${S.f[key]===a?' selected':''}>${esc(b)}</option>`}).join('')}</select>`;
+
+// ---- charts
+function months(){const a=[],n=new Date();for(let k=5;k>=0;k--){const d=new Date(n.getFullYear(),n.getMonth()-k,1);a.push(d.getFullYear()+'-'+pad(d.getMonth()+1))}return a}
+function chart(){const ms=months(),I=ms.map(m=>sum('in',m)),O=ms.map(m=>sum('out',m)),mx=Math.max(1e6,...I,...O)*1.1;
+ let s=`<div class="lg"><span><i style="background:#294235"></i>Pemasukan</span><span><i style="background:#C48A3C"></i>Pengeluaran</span></div><svg viewBox="0 0 600 230" width="100%" role="img" aria-label="Grafik pemasukan dan pengeluaran 6 bulan terakhir">`;
+ [0,.5,1].forEach(g=>{const y=190-g*170;s+=`<line x1="44" x2="600" y1="${y}" y2="${y}" stroke="#E6EAE6"/><text x="38" y="${y+4}" text-anchor="end" font-size="10" fill="#78827B">${(mx*g/1e6).toFixed(1)} jt</text>`});
+ ms.forEach((m,i)=>{const x=66+i*89,h1=I[i]/mx*170,h2=O[i]/mx*170;s+=`<rect x="${x}" y="${190-h1}" width="28" height="${h1}" rx="3" fill="#294235"><title>Pemasukan ${rp(I[i])}</title></rect><rect x="${x+32}" y="${190-h2}" width="28" height="${h2}" rx="3" fill="#C48A3C"><title>Pengeluaran ${rp(O[i])}</title></rect><text x="${x+30}" y="210" text-anchor="middle" font-size="11" fill="#78827B">${MN[m.slice(5)-1]}</text>`});
+ return s+'</svg>'}
+function donut(){const c={Terisi:0,Kosong:0,Maintenance:0},col={Terisi:'#294235',Kosong:'#DDE9DF',Maintenance:'#C48A3C'};D.rooms.forEach(r=>c[rst(r)]++);const n=D.rooms.length||1,C=2*Math.PI*48;let off=0,s='';
+ for(const k in c){const l=c[k]/n*C;s+=`<circle r="48" cx="60" cy="60" fill="none" stroke="${col[k]}" stroke-width="16" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-off}" transform="rotate(-90 60 60)"/>`;off+=l}
+ return`<div class="dn-w"><svg viewBox="0 0 120 120" width="130" height="130" role="img" aria-label="Status kamar">${s}<text x="60" y="58" text-anchor="middle" font-size="20" font-weight="700" fill="#202923">${c.Terisi}/${D.rooms.length}</text><text x="60" y="73" text-anchor="middle" font-size="9" fill="#78827B">terisi</text></svg><ul>${Object.keys(c).map(k=>`<li><span><i style="display:inline-block;width:9px;height:9px;border-radius:3px;background:${col[k]};margin-right:8px"></i>${k}</span><b>${c[k]}</b></li>`).join('')}</ul></div>`}
+
+// ---- pages
+const P={};
+P.dash=()=>{const ym=T.slice(0,7),c={};D.rooms.forEach(r=>{const s=rst(r);c[s]=(c[s]||0)+1});
+ const ub=D.bills.filter(b=>bst(b)!=='Lunas').sort((a,b)=>a.due.localeCompare(b.due)),st=(l,v,s)=>`<div class="card stat"><small>${l}</small><b>${v}</b><span class="sub">${s}</span></div>`;
+ return head('Dashboard',esc(D.cfg.name)+' · '+esc(D.cfg.loc))+`<div class="grid g4">${st('Total kamar',D.rooms.length,D.rooms.length?'Di '+esc(D.cfg.name):'Belum ada kamar')}${st('Kamar terisi',c.Terisi||0,Math.round((c.Terisi||0)/(D.rooms.length||1)*100)+'% okupansi')}${st('Kamar kosong',c.Kosong||0,(c.Maintenance||0)+' dalam maintenance')}${st('Pemasukan bulan ini',rp(sum('in',ym)),'Pengeluaran '+rp(sum('out',ym)))}</div>
+ <div class="grid g2"><div class="card"><h3>Pemasukan dan pengeluaran, 6 bulan terakhir</h3>${chart()}</div><div class="card"><h3>Status kamar</h3>${donut()}</div></div>
+ <div class="grid g2"><div class="card tw"><h3>Tagihan belum lunas (${ub.length})</h3>${ub.length?`<table><tbody>${ub.slice(0,6).map(b=>`<tr><td><b>${esc(ten(b.tenantId)?.name)}</b><br><span class="sub">Kamar ${rno(ten(b.tenantId)?.roomId)} · ${per(b.period)} · jatuh tempo ${fd(b.due)}</span></td><td>${rp(b.amount-paid(b))}</td><td>${badge(bst(b))}</td></tr>`).join('')}</tbody></table>`:'<div class="empty">Semua tagihan sudah lunas.</div>'}</div>
+ <div class="card"><h3>Aktivitas terbaru</h3>${D.log.slice(0,6).map(a=>`<div class="act"><i></i><div>${esc(a.x)}<br><span class="sub">${ago(a.t)}</span></div></div>`).join('')||'<div class="empty">Belum ada aktivitas.</div>'}</div></div>`};
+
+P.rooms=()=>{const l=D.rooms.filter(r=>(!S.f.rooms||rst(r)===S.f.rooms)&&has(r.no,S.q)).sort((a,b)=>a.no.localeCompare(b.no,0,{numeric:1}));
+ return head('Data Kamar',D.rooms.length+' kamar terdaftar','<button class="btn pr" data-a="addRoom">+ Tambah kamar</button>')+`<div class="bar">${sel('rooms',['Terisi','Kosong','Maintenance'],'Semua status')}</div>`+(l.length?`<div class="grid g3">${l.map(r=>{const o=occ(r.id);return`<div class="card room"><div class="rw"><b class="n">Kamar ${esc(r.no)}</b>${badge(rst(r))}</div><p>${esc(r.prop)} · Lantai ${esc(r.floor)}</p><b>${rp(r.price)}</b><span class="sub"> / bulan</span><p>${o?'Dihuni '+esc(o.name):rst(r)==='Kosong'?'Siap disewakan':'Sedang diperbaiki'}</p><div class="ac">${btn('viewRoom',r.id,'Detail')}${btn('editRoom',r.id,'Edit')}${btn('delRoom',r.id,'Hapus','dn')}</div></div>`}).join('')}</div>`:'<div class="card empty">Tidak ada kamar yang cocok dengan pencarian atau filter.</div>')};
+
+P.tenants=()=>{const l=D.tenants.filter(t=>(!S.f.tenants||t.status===S.f.tenants)&&has(t.name+' '+rno(t.roomId)+' '+t.phone,S.q));
+ return head('Penghuni',D.tenants.filter(t=>t.status==='Aktif').length+' penghuni aktif','<button class="btn pr" data-a="addTen">+ Tambah penghuni</button>')+`<div class="bar">${sel('tenants',['Aktif','Keluar'],'Semua status')}</div>`+tbl(['Nama','Kamar','Masuk','Keluar','Sewa','Status','Aksi'],l.map(t=>`<tr><td><b>${esc(t.name)}</b><br><span class="sub">${esc(t.phone)}</span></td><td>${rno(t.roomId)}</td><td>${fd(t.in)}</td><td>${fd(t.out)}</td><td>${rp(t.price)}</td><td>${badge(t.status)}</td><td><div class="ac">${btn('viewTen',t.id,'Detail')}${btn('editTen',t.id,'Edit')}${t.status==='Aktif'?btn('checkout',t.id,'Check-out'):btn('checkin',t.id,'Check-in')}${btn('delTen',t.id,'Hapus','dn')}</div></td></tr>`),'Belum ada penghuni yang cocok.')};
+
+P.bills=()=>{const l=D.bills.filter(b=>(!S.f.bills||bst(b)===S.f.bills)&&has((ten(b.tenantId)?.name||'')+' '+rno(ten(b.tenantId)?.roomId),S.q)).sort((a,b)=>b.due.localeCompare(a.due));
+ return head('Tagihan','Kelola tagihan sewa dan catat pembayaran','<button class="btn" data-a="genBills">Buat tagihan bulan ini</button><button class="btn pr" data-a="addBill">+ Tagihan baru</button>')+`<div class="bar">${sel('bills',['Belum dibayar','Dibayar sebagian','Lunas','Terlambat'],'Semua status')}</div>`+tbl(['Penghuni','Kamar','Periode','Jatuh tempo','Tagihan','Dibayar','Status','Aksi'],l.map(b=>{const t=ten(b.tenantId),s=bst(b);return`<tr><td><b>${esc(t?.name)}</b><br><span class="sub">Ditagih ${fd(b.date)}</span></td><td>${rno(t?.roomId)}</td><td>${per(b.period)}</td><td>${fd(b.due)}</td><td>${rp(b.amount)}</td><td>${rp(paid(b))}</td><td>${badge(s)}</td><td><div class="ac">${s!=='Lunas'?btn('pay',b.id,'Catat bayar','pr'):''}${btn('editBill',b.id,'Edit')}${btn('delBill',b.id,'Hapus','dn')}</div></td></tr>`}),'Belum ada tagihan. Klik “Buat tagihan bulan ini”.')};
+
+P.fin=()=>{const f=S.f,l=D.tx.filter(t=>(!f.from||t.date>=f.from)&&(!f.to||t.date<=f.to)&&(!f.cat||t.cat===f.cat)&&has(t.desc+' '+t.cat,S.q)).sort((a,b)=>b.date.localeCompare(a.date)),i=sum('in',0,l),o=sum('out',0,l);
+ const st=(a,b,c)=>`<div class="card stat"><small>${a}</small><b class="${c||''}">${b}</b></div>`;
+ return head('Keuangan','Ringkasan mengikuti filter yang dipilih','<button class="btn" data-a="addOut">+ Pengeluaran</button><button class="btn pr" data-a="addIn">+ Pemasukan</button>')+`<div class="grid g4" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">${st('Total pemasukan',rp(i),'pos')}${st('Total pengeluaran',rp(o),'neg')}${st('Arus kas bersih',rp(i-o),i-o<0?'neg':'pos')}</div><div class="card" style="margin:14px 0"><h3>Perbandingan 6 bulan terakhir</h3>${chart()}</div>
+ <div class="bar"><input type="date" value="${f.from}" aria-label="Dari tanggal" onchange="S.f.from=this.value;render()"><input type="date" value="${f.to}" aria-label="Sampai tanggal" onchange="S.f.to=this.value;render()">${sel('cat',[...IC,...EC],'Semua kategori')}<button class="btn" onclick="S.f.from=S.f.to=S.f.cat='';render()">Reset filter</button></div>`+
+ tbl(['Tanggal','Kategori','Keterangan','Jumlah','Aksi'],l.map(t=>`<tr><td>${fd(t.date)}</td><td>${badge(t.cat).replace(/class="bd [a-z]+"/,'class="bd '+(t.type==='in'?'ok':'warn')+'"')}</td><td>${esc(t.desc)}</td><td class="${t.type==='in'?'pos':'neg'}"><b>${t.type==='in'?'+':'−'}${rp(t.amount)}</b></td><td>${t.pid||t.mid?'<span class="sub">Otomatis dari '+(t.pid?'tagihan':'maintenance')+'</span>':`<div class="ac">${btn('editTx',t.id,'Edit')}${btn('delTx',t.id,'Hapus','dn')}</div>`}</td></tr>`),'Tidak ada transaksi pada filter ini.')};
+
+P.maint=()=>{const l=D.maint.filter(m=>(!S.f.maint||m.status===S.f.maint)&&has(m.title+' '+rno(m.roomId),S.q)).sort((a,b)=>b.date.localeCompare(a.date)),nx={Baru:'Proses',Diproses:'Selesaikan'};
+ return head('Maintenance','Catat kerusakan dan biaya perbaikan','<button class="btn pr" data-a="addMt">+ Laporan kerusakan</button>')+`<div class="bar">${sel('maint',['Baru','Diproses','Selesai'],'Semua status')}</div>`+tbl(['Kerusakan','Kamar','Tanggal','Biaya','Status','Aksi'],l.map(m=>`<tr><td><b>${esc(m.title)}</b><br><span class="sub">${esc(m.desc)}</span></td><td>${rno(m.roomId)}</td><td>${fd(m.date)}</td><td>${m.cost?rp(m.cost):'—'}</td><td>${badge(m.status)}</td><td><div class="ac">${nx[m.status]?btn('nextMt',m.id,nx[m.status],'pr'):''}${btn('editMt',m.id,'Edit')}${btn('delMt',m.id,'Hapus','dn')}</div></td></tr>`),'Belum ada laporan kerusakan.')};
+
+P.set=()=>head('Pengaturan','Informasi kos dan data demo')+`<div class="card" style="max-width:560px"><h3>Profil kos</h3><form id="cf" class="fg" novalidate>${[['name','Nama kos','text'],['loc','Lokasi','text'],['owner','Nama pemilik','text','','full']].map(f=>field(f,D.cfg[f[0]])).join('')}<div class="mf full" style="grid-column:1/-1"><button class="btn pr">Simpan pengaturan</button></div></form></div>
+ <div class="card" style="max-width:560px;margin-top:14px"><h3>Data demo</h3><p class="sub">Semua data tersimpan di browser (LocalStorage). Reset akan menghapus perubahan Anda dan mengembalikan data contoh Kos Tembalang.</p><button class="btn dn" data-a="reset">Kembalikan data demo</button></div>`;
+
+// ---- actions
+const roomOpts=(cur)=>D.rooms.filter(r=>r.id===cur||(!occ(r.id)&&!isM(r))).map(r=>[r.id,r.no+' — '+rp(r.price)]),allRooms=()=>D.rooms.map(r=>[r.id,'Kamar '+r.no]);
+const A={close:closeM,
+ addRoom:()=>roomForm(),editRoom:id=>roomForm(room(id)),
+ viewRoom(id){const r=room(id),o=occ(id);openM(`<h3>Kamar ${esc(r.no)}</h3><dl class="dl"><dt>Properti</dt><dd>${esc(r.prop)}</dd><dt>Lantai</dt><dd>${esc(r.floor)}</dd><dt>Harga sewa</dt><dd>${rp(r.price)} / bulan</dd><dt>Fasilitas</dt><dd>${esc(r.fac)}</dd><dt>Status</dt><dd>${badge(rst(r))}</dd><dt>Penghuni</dt><dd>${o?esc(o.name)+' (sejak '+fd(o.in)+')':'—'}</dd></dl><div class="mf"><button class="btn" data-a="close">Tutup</button></div>`)},
+ delRoom(id){const r=room(id);if(occ(id))return toast('Kamar masih dihuni. Lakukan check-out terlebih dahulu.',1);if(D.tenants.some(t=>t.roomId===id)||D.maint.some(m=>m.roomId===id))return toast('Kamar punya riwayat penghuni atau maintenance, sehingga tidak bisa dihapus.',1);ask(`Hapus kamar ${esc(r.no)}?`,()=>{D.rooms=D.rooms.filter(x=>x.id!==id);log('Kamar '+r.no+' dihapus');toast('Kamar dihapus')})},
+ addTen:()=>tenForm(),editTen:id=>tenForm(ten(id)),
+ viewTen(id){const t=ten(id),bs=D.bills.filter(b=>b.tenantId===id).sort((a,b)=>b.period.localeCompare(a.period));openM(`<h3>${esc(t.name)}</h3><dl class="dl"><dt>Kamar</dt><dd>${rno(t.roomId)}</dd><dt>Telepon</dt><dd>${esc(t.phone)}</dd><dt>Email</dt><dd>${esc(t.email||'—')}</dd><dt>Masuk / keluar</dt><dd>${fd(t.in)} / ${fd(t.out)}</dd><dt>Sewa</dt><dd>${rp(t.price)}</dd><dt>Deposit</dt><dd>${rp(t.deposit)}</dd><dt>Status</dt><dd>${badge(t.status)}</dd></dl><h3 style="margin:18px 0 8px;font-size:14px">Riwayat pembayaran</h3>${bs.length?`<div class="tw"><table style="min-width:0"><tbody>${bs.map(b=>`<tr><td>${per(b.period)}</td><td>${rp(paid(b))} / ${rp(b.amount)}</td><td>${badge(bst(b))}</td></tr>${b.pays.map(p=>`<tr><td class="sub" colspan="3">↳ ${fd(p.date)} · ${rp(p.amount)} · ${esc(p.method)}</td></tr>`).join('')}`).join('')}</tbody></table></div>`:'<p class="sub">Belum ada tagihan.</p>'}<div class="mf"><button class="btn" data-a="close">Tutup</button></div>`)},
+ checkout(id){const t=ten(id);ask(`Check-out ${esc(t.name)} dari kamar ${rno(t.roomId)}? Kamar akan kembali kosong.`,()=>{t.status='Keluar';t.out=T;log(t.name+' check-out dari kamar '+rno(t.roomId));toast('Check-out berhasil')})},
+ checkin(id){const t=ten(id),r=room(t.roomId);if(!r)return toast('Kamar tidak ditemukan.',1);if(occ(r.id)||isM(r))return toast('Kamar '+r.no+' sedang tidak tersedia.',1);t.status='Aktif';t.out='';t.in=T;log(t.name+' check-in ke kamar '+r.no);save();render();toast('Check-in berhasil')},
+ delTen(id){const t=ten(id);ask(`Hapus ${esc(t.name)}? Semua tagihan dan pembayarannya ikut terhapus.`,()=>{const bs=D.bills.filter(b=>b.tenantId===id),pids=bs.flatMap(b=>b.pays.map(p=>p.id));D.tx=D.tx.filter(x=>!pids.includes(x.pid));D.bills=D.bills.filter(b=>b.tenantId!==id);D.tenants=D.tenants.filter(x=>x.id!==id);log('Penghuni '+t.name+' dihapus');toast('Penghuni dihapus')})},
+ addBill:()=>billForm(),editBill:id=>billForm(D.bills.find(b=>b.id===id)),
+ genBills(){const p=T.slice(0,7);let n=0;D.tenants.filter(t=>t.status==='Aktif'&&!D.bills.some(b=>b.tenantId===t.id&&b.period===p)).forEach(t=>{let due=p+'-10';if(due<T)due=addDays(T,7);D.bills.push({id:uid(),tenantId:t.id,period:p,date:T,due,amount:t.price,pays:[]});n++});if(n)log(n+' tagihan '+per(p)+' dibuat');save();render();toast(n?n+' tagihan dibuat':'Semua penghuni aktif sudah punya tagihan bulan ini',!n)},
+ pay(id){const b=D.bills.find(x=>x.id===id),t=ten(b.tenantId),sisa=b.amount-paid(b);form(`Catat pembayaran — ${esc(t?.name)}`,[['amount','Jumlah dibayar','number',0,'full'],['date','Tanggal','date'],['method','Metode','select',['Transfer','Tunai','QRIS']]],{amount:sisa,date:T},v=>{if(v.amount<=0)return'Jumlah harus lebih dari 0.';if(v.amount>sisa)return'Jumlah melebihi sisa tagihan ('+rp(sisa)+').';const p={id:uid(),date:v.date,amount:v.amount,method:v.method};b.pays.push(p);D.tx.push({id:uid(),type:'in',cat:'Uang sewa',date:v.date,amount:v.amount,desc:'Sewa '+t?.name+' (kamar '+rno(t?.roomId)+')',pid:p.id});log('Pembayaran '+rp(v.amount)+' diterima dari '+t?.name);toast('Pembayaran dicatat')},'Catat pembayaran')},
+ delBill(id){ask('Hapus tagihan ini beserta catatan pembayarannya?',()=>{const b=D.bills.find(x=>x.id===id),ids=b.pays.map(p=>p.id);D.tx=D.tx.filter(x=>!ids.includes(x.pid));D.bills=D.bills.filter(x=>x.id!==id);toast('Tagihan dihapus')})},
+ addIn:()=>txForm('in'),addOut:()=>txForm('out'),editTx:id=>{const t=D.tx.find(x=>x.id===id);txForm(t.type,t)},
+ delTx(id){ask('Hapus transaksi ini?',()=>{D.tx=D.tx.filter(x=>x.id!==id);toast('Transaksi dihapus')})},
+ addMt:()=>mtForm(),editMt:id=>mtForm(D.maint.find(m=>m.id===id)),
+ nextMt(id){const m=D.maint.find(x=>x.id===id);m.status=m.status==='Baru'?'Diproses':'Selesai';if(m.status==='Selesai')m.done=T;syncExp(m);log('Maintenance "'+m.title+'" → '+m.status);save();render();toast('Status diubah menjadi '+m.status)},
+ delMt(id){ask('Hapus laporan ini?',()=>{D.tx=D.tx.filter(x=>x.mid!==id);D.maint=D.maint.filter(m=>m.id!==id);toast('Laporan dihapus')})},
+ reset(){ask('Kembalikan semua data ke kondisi demo? Perubahan Anda akan hilang.',()=>{D=seed();toast('Data demo dikembalikan')})}};
+function syncExp(m){D.tx=D.tx.filter(x=>x.mid!==m.id);if(m.status==='Selesai'&&m.cost>0)D.tx.push({id:uid(),type:'out',cat:'Perbaikan',date:m.done||m.date,amount:m.cost,desc:m.title+' (kamar '+rno(m.roomId)+')',mid:m.id})}
+function roomForm(r){const e=!!r;form(e?'Edit kamar':'Tambah kamar',[['no','Nomor kamar','text'],['prop','Nama properti','text'],['floor','Lantai','number'],['price','Harga sewa / bulan','number'],['fac','Fasilitas','text',0,'full'],['st','Status kamar','select',[['auto','Otomatis (Terisi / Kosong)'],['Maintenance','Maintenance']],'full']],e?{...r,st:r.manual?'Maintenance':'auto'}:{prop:D.cfg.name,floor:1,st:'auto'},v=>{if(v.price<=0)return'Harga sewa harus lebih dari 0.';if(D.rooms.some(x=>x.no.toLowerCase()===v.no.toLowerCase()&&x.id!==r?.id))return'Nomor kamar '+v.no+' sudah dipakai.';if(v.st==='Maintenance'&&e&&occ(r.id))return'Kamar masih dihuni. Lakukan check-out sebelum mengubah ke Maintenance.';const o={no:v.no,prop:v.prop,floor:v.floor,price:v.price,fac:v.fac,manual:v.st==='Maintenance'};if(e)Object.assign(r,o);else D.rooms.push({id:uid(),...o});log('Kamar '+v.no+(e?' diperbarui':' ditambahkan'));toast(e?'Kamar diperbarui':'Kamar ditambahkan')})}
+function tenForm(t){const e=!!t;form(e?'Edit penghuni':'Tambah penghuni (check-in)',[['name','Nama lengkap','text',0,'full'],['phone','Nomor telepon','tel'],['email','Email','email',0,0,1],['roomId','Kamar','select',roomOpts(t?.roomId)],['price','Harga sewa','number'],['in','Tanggal masuk','date'],['out','Tanggal keluar','date',0,0,1],['deposit','Uang deposit','number']],t||{in:T,out:''},v=>{if(v.price<=0)return'Harga sewa harus lebih dari 0.';if(v.out&&v.out<v.in)return'Tanggal keluar tidak boleh sebelum tanggal masuk.';if(!/^[0-9+\- ]{8,16}$/.test(v.phone))return'Nomor telepon tidak valid.';if(v.email&&!/^\S+@\S+\.\S+$/.test(v.email))return'Format email tidak valid.';const active=!e||t.status==='Aktif',r=room(v.roomId);if(active){const o=occ(v.roomId);if(o&&o.id!==t?.id)return'Kamar '+r.no+' sudah dihuni '+o.name+'.';if(isM(r))return'Kamar '+r.no+' sedang maintenance.'}
+ if(e)Object.assign(t,v);else{D.tenants.push({id:uid(),...v,status:'Aktif'});log(v.name+' check-in ke kamar '+r.no)}toast(e?'Data penghuni diperbarui':'Penghuni ditambahkan')})}
+function billForm(b){const e=!!b,ts=D.tenants.filter(t=>t.status==='Aktif'||t.id===b?.tenantId);if(!ts.length)return toast('Belum ada penghuni aktif.',1);form(e?'Edit tagihan':'Tagihan baru',[['tenantId','Penghuni','select',ts.map(t=>[t.id,t.name+' — kamar '+rno(t.roomId)]),'full'],['period','Periode','month'],['amount','Jumlah tagihan','number'],['date','Tanggal tagihan','date'],['due','Jatuh tempo','date']],b||{tenantId:ts[0].id,period:T.slice(0,7),amount:ts[0].price,date:T,due:addDays(T,7)},v=>{if(v.amount<=0)return'Jumlah tagihan harus lebih dari 0.';if(v.due<v.date)return'Jatuh tempo tidak boleh sebelum tanggal tagihan.';if(D.bills.some(x=>x.tenantId===v.tenantId&&x.period===v.period&&x.id!==b?.id))return'Penghuni ini sudah punya tagihan untuk '+per(v.period)+'.';if(e&&v.amount<paid(b))return'Jumlah tagihan tidak boleh di bawah pembayaran yang sudah diterima ('+rp(paid(b))+').';if(e)Object.assign(b,v);else{D.bills.push({id:uid(),...v,pays:[]});log('Tagihan '+per(v.period)+' dibuat untuk '+ten(v.tenantId).name)}toast(e?'Tagihan diperbarui':'Tagihan dibuat')})}
+function txForm(ty,t){const e=!!t;form((e?'Edit ':'Catat ')+(ty==='in'?'pemasukan':'pengeluaran'),[['cat','Kategori','select',ty==='in'?IC:EC],['date','Tanggal','date'],['amount','Jumlah','number'],['desc','Keterangan','text',0,'full']],t||{date:T},v=>{if(v.amount<=0)return'Jumlah harus lebih dari 0.';if(e)Object.assign(t,v);else D.tx.push({id:uid(),type:ty,...v});log((ty==='in'?'Pemasukan ':'Pengeluaran ')+rp(v.amount)+' dicatat ('+v.cat+')');toast('Transaksi disimpan')})}
+function mtForm(m){const e=!!m;form(e?'Edit laporan':'Laporan kerusakan',[['title','Nama kerusakan','text',0,'full'],['roomId','Kamar','select',allRooms()],['date','Tanggal laporan','date'],['desc','Deskripsi','textarea',0,'full'],['cost','Biaya perbaikan','number',0,0,1],['status','Status','select',['Baru','Diproses','Selesai']],['flag','Status kamar','select',[['0','Tidak diubah'],['1','Ubah ke Maintenance selama belum selesai']],'full']],m?{...m,flag:m.flag?'1':'0'}:{date:T,status:'Baru',flag:'0'},v=>{const fl=v.flag==='1';if(fl&&v.status!=='Selesai'&&occ(v.roomId))return'Kamar masih dihuni. Lakukan check-out sebelum mengubah ke Maintenance.';const o={title:v.title,roomId:v.roomId,date:v.date,desc:v.desc,cost:v.cost,status:v.status,flag:fl};if(v.status==='Selesai'&&!(m&&m.done))o.done=T;let x=m;if(e)Object.assign(m,o);else{x={id:uid(),...o};D.maint.push(x)}syncExp(x);log('Laporan "'+v.title+'" '+(e?'diperbarui':'dibuat'));toast(e?'Laporan diperbarui':'Laporan ditambahkan')})}
+
+// ---- shell
+function render(){const p=S.page,pn=PAGES.find(x=>x[0]===p)[1];
+ $('#nav').innerHTML=PAGES.map(([k,l])=>`<button class="${k===p?'on':''}" data-a="go" data-id="${k}">${l}</button>`).join('');
+ $('#pt').textContent=pn;$('#view').innerHTML=P[p]();$('#sk').textContent=D.cfg.name;$('#sl').textContent=D.cfg.loc;$('#ua').textContent=(D.cfg.owner||'U').slice(0,2).toUpperCase();document.title=pn+' — KOSPACE';
+ $('#q').placeholder={rooms:'Cari nomor kamar…',tenants:'Cari nama atau kamar…',bills:'Cari penghuni…',fin:'Cari transaksi…',maint:'Cari kerusakan…'}[p]||'Cari…';$('#q').disabled=!['rooms','tenants','bills','fin','maint'].includes(p);
+ const od=D.bills.filter(b=>bst(b)==='Terlambat').length,nm=D.maint.filter(m=>m.status==='Baru').length;$('#bc').textContent=od+nm;$('#bc').style.display=od+nm?'grid':'none';
+ $('#np').innerHTML=`<p><b>Notifikasi</b></p><p>${od?od+' tagihan terlambat dibayar':'Tidak ada tagihan terlambat'}</p><p>${nm?nm+' laporan kerusakan baru':'Tidak ada laporan baru'}</p>`;
+ const cf=$('#cf');if(cf)cf.onsubmit=e=>{e.preventDefault();const f=new FormData(cf),n=String(f.get('name')).trim(),l=String(f.get('loc')).trim(),o=String(f.get('owner')).trim();if(!n||!l||!o)return toast('Semua kolom wajib diisi.',1);D.cfg={name:n,loc:l,owner:o};save();render();toast('Pengaturan disimpan')}}
+A.go=id=>{S.page=id;S.q='';$('#q').value='';location.hash=id;$('#sb').classList.remove('on');$('#sc').classList.remove('on');render();scrollTo(0,0)};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(b&&A[b.dataset.a])A[b.dataset.a](b.dataset.id);if(e.target.id==='ov')closeM();if(!e.target.closest('#np,#bell'))$('#np').classList.remove('on')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
+$('#q').addEventListener('input',e=>{S.q=e.target.value;render()});
+$('#bell').onclick=()=>$('#np').classList.toggle('on');
+$('#mn').onclick=()=>{$('#sb').classList.add('on');$('#sc').classList.add('on')};$('#sc').onclick=()=>{$('#sb').classList.remove('on');$('#sc').classList.remove('on')};
+const h=location.hash.slice(1);if(PAGES.some(x=>x[0]===h))S.page=h;
+// Search re-render keeps focus: restore after render
+const _r=render;render=function(){const f=document.activeElement&&document.activeElement.id==='q';_r();if(f){const q=$('#q');q.focus();q.setSelectionRange(q.value.length,q.value.length)}};
+render();
+</script>
+</body>
+</html>
