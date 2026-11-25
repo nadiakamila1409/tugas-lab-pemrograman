@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pelacak Status Laundry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="atas">
+    <div class="atas-judul">
+      <h1>Pelacak Status Laundry</h1>
+      <p>Catat cucian yang masuk, ubah statusnya, dan lihat riwayat tiap pelanggan.</p>
+    </div>
+
+    <form id="form-cek" class="cek" autocomplete="off">
+      <label for="kode-cek">Cek status dengan kode pesanan</label>
+      <div class="cek-baris">
+        <input id="kode-cek" type="text" placeholder="Contoh: LDR-0001" required>
+        <button type="submit" class="tombol tombol-utama">Cek status</button>
+      </div>
+      <div id="hasil-cek" class="hasil-cek" role="status" aria-live="polite"></div>
+    </form>
+  </header>
+
+  <main class="tata">
+
+    <!-- FORM PESANAN -->
+    <section class="panel" aria-labelledby="judul-form">
+      <h2 id="judul-form">Pesanan baru</h2>
+
+      <form id="form-pesanan" novalidate>
+        <div class="isian">
+          <label for="nama">Nama pelanggan</label>
+          <input id="nama" name="nama" type="text" maxlength="60" required>
+        </div>
+
+        <div class="isian">
+          <label for="hp">Nomor HP</label>
+          <input id="hp" name="hp" type="tel" inputmode="tel" placeholder="08123456789" required>
+        </div>
+
+        <div class="isian">
+          <label for="layanan">Layanan</label>
+          <select id="layanan" name="layanan"></select>
+        </div>
+
+        <div class="isian">
+          <label for="berat">Berat (kg)</label>
+          <input id="berat" name="berat" type="number" min="0.1" step="0.1" required>
+        </div>
+
+        <div class="isian isian-cek">
+          <input id="kilat" name="kilat" type="checkbox">
+          <label for="kilat">Layanan kilat (selesai hari ini)</label>
+        </div>
+
+        <div class="isian">
+          <label for="catatan">Catatan (opsional)</label>
+          <textarea id="catatan" name="catatan" rows="2" maxlength="200" placeholder="Contoh: baju putih dipisah"></textarea>
+        </div>
+
+        <div class="biaya">
+          <span>Perkiraan biaya</span>
+          <strong id="pratinjau-biaya">Rp0</strong>
+        </div>
+
+        <p id="pesan-form" class="pesan" role="status" aria-live="polite"></p>
+
+        <div class="aksi-form">
+          <button type="submit" id="tombol-simpan" class="tombol tombol-utama">Simpan pesanan</button>
+          <button type="button" id="tombol-batal" class="tombol" hidden>Batal ubah</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- DAFTAR PESANAN -->
+    <section class="panel panel-daftar" aria-labelledby="judul-daftar">
+      <h2 id="judul-daftar">Daftar pesanan</h2>
+
+      <div class="ringkasan" id="ringkasan"></div>
+
+      <div class="alat">
+        <label for="cari" class="sr-only">Cari pesanan</label>
+        <input id="cari" type="search" placeholder="Cari nama, kode, atau nomor HP">
+        <div id="tab-status" class="tab-status" role="group" aria-label="Filter status"></div>
+      </div>
+
+      <div id="daftar" class="daftar"></div>
+    </section>
+
+  </main>
+
+  <!-- RIWAYAT PELANGGAN -->
+  <dialog id="dialog-riwayat" class="dialog" aria-labelledby="judul-riwayat">
+    <div id="isi-riwayat"></div>
+    <form method="dialog">
+      <button class="tombol tombol-utama">Tutup</button>
+    </form>
+  </dialog>
+
+  <footer class="kaki">
+    Data tersimpan di browser ini. Menghapus data browser akan menghapus pesanan.
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
